@@ -14,3 +14,5 @@ This repository contains the two methodological components used in the paper:
 
 If you use this code, please cite the associated manuscript.
 
+## Requirements
+numpy; pandas; scipy; scikit-learn; matplotlib; tensorflow>=2.12; bayesian-optimization
