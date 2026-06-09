@@ -1,4 +1,4 @@
-# Na-SSE: outlier detection and generative design
+# Na-SSE: Outlier Detection and Generative Design
 
 Code accompanying the manuscript on data-driven screening and generative
 exploration of **sodium solid-state electrolytes (Na-SSEs)**.
