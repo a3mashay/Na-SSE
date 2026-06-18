@@ -1,26 +1,18 @@
 """
 Na-SSE Outlier Detection
 ========================
-Robust statistical outlier detection for sodium solid-state electrolyte (Na-SSE)
-candidates, as used in the manuscript.
-
 Method:
   * Standardize composition descriptors and reduce with PCA (95% variance retained).
-  * Global outliers: robust Mahalanobis^2 distance using a Minimum Covariance
-    Determinant (MinCovDet) estimator, with a Ledoit-Wolf fallback.
-  * Local outliers: Local Outlier Factor (LOF) computed either in the same PCA space
-    or in the 2D UMAP embedding (set LOF_SPACE; see README).
-  * Compounds in the top 1% of either score are flagged; per-material "why"
-    reports are written for the most extreme global outliers.
+  * Global outliers: robust Mahalanobis^2 distance using a Minimum Covariance Determinant (MinCovDet) estimator, with a Ledoit-Wolf fallback.
+  * Local outliers: Local Outlier Factor (LOF) computed either in the same PCA space or in the 2D UMAP embedding (set LOF_SPACE; see README).
+  * Compounds in the top 1% of either score are flagged; per-material "why" reports are written for the most extreme global outliers.
 
 Inputs (CSV):
-  --features  composition feature table (one row per material; must contain
-              'formula_pretty' and numeric descriptor columns)
+  --features  composition feature table (one row per material; must contain 'formula_pretty' and numeric descriptor columns)
   --summary   screened summary table (provides family / cluster / Ehull / band_gap)
 
 Outputs (written to --outdir):
-  outliers_pca_robustcov_summary.csv, per-family and per-cluster counts,
-  per-material WHY reports, and diagnostic plots.
+  outliers_pca_robustcov_summary.csv, per-family and per-cluster counts, per-material WHY reports, and diagnostic plots.
 
 Usage:
   python outlier_detection.py --features data/composition_features.csv \
