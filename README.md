@@ -16,7 +16,7 @@ If you use this code, please cite the associated manuscript.
 
 ## Local-outlier space (PCA vs UMAP)
 
-> Note: Two outlier detection methods are presented in this section.
+Note: Two outlier detection methods are presented in this section.
 
 ## Requirements
 numpy; pandas; scipy; scikit-learn; matplotlib; tensorflow>=2.12; bayesian-optimization
