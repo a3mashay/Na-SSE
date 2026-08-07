@@ -98,9 +98,9 @@ Useful flags: `--epochs`, `--n-synthetic`, `--seed`.
 
 ## Reproducibility
 
-Both scripts are seeded (17 and 72). outlier_detection.py is deterministic — the same inputs give the same outputs.
+Both scripts are seeded (17 and 72).| `outlier_detection.py` | is deterministic — the same inputs give the same outputs.
 
-wgan_gp_generative.py may not reproduce the paper's numbers exactly. GAN training varies with TensorFlow version and hardware, and both the sampling and the Bayesian-optimization objective are stochastic, so the optimized point and the neighbor ordering can shift between runs. The overall design region is reproducible; individual descriptor values should be regenerated rather than quoted.
+| `wgan_gp_generative.py` | may not reproduce the paper's numbers exactly. GAN training varies with TensorFlow version and hardware, and both the sampling and the Bayesian-optimization objective are stochastic, so the optimized point and the neighbor ordering can shift between runs. The overall design region is reproducible; individual descriptor values should be regenerated rather than quoted.
 
 Figures are produced from the CSV outputs above; the plotting scripts are not part of this release.
 
