@@ -32,57 +32,6 @@ minutes on CPU at the dataset size used in the paper.
 
 ---
 
-## Input data
-
-Both scripts read CSV tables produced by the upstream screening pipeline. Neither script
-retrieves data from the Materials Project; the API key and retrieval step remain with the
-upstream pipeline.
-
-### `composition_features.csv`
-
-One row per compound, keyed on `formula_pretty`, holding the Matminer composition
-descriptors together with the tabulated electronic and thermodynamic properties. In the
-published run this table held 3,873 pre-filtered Na compositions and 328 retained
-descriptors.
-
-`outlier_detection.py` uses every numeric non-metadata column in this file.
-`wgan_gp_generative.py` uses only the 27 descriptors listed in `FEATURE_COLS`, which must
-be present under exactly these names:
-
-| Group | Columns |
-| --- | --- |
-| Core screening properties (3) | `band_gap`, `Ehull_meV_atom`, `Na_ratio` |
-| Norm-based descriptors (6) | `0-norm`, `2-norm`, `3-norm`, `5-norm`, `7-norm`, `10-norm` |
-| Averaged / range elemental (9) | `mean AtomicWeight`, `mean Column`, `mean Row`, `range Number`, `mean Number`, `range AtomicRadius`, `mean AtomicRadius`, `range Electronegativity`, `mean Electronegativity` |
-| Magpie aggregates (5) | `MagpieData mean AtomicWeight`, `MagpieData mean Electronegativity`, `MagpieData mean GSvolume_pa`, `MagpieData mean GSbandgap`, `MagpieData mean GSmagmom` |
-| Element fractions (4) | `Na fraction`, `O fraction`, `P fraction`, `S fraction` |
-
-`mean AtomicWeight` / `MagpieData mean AtomicWeight` and `mean Electronegativity` /
-`MagpieData mean Electronegativity` are deliberately kept as separate features: they are
-computed from different elemental reference tables (direct stoichiometric average versus
-the Magpie preset).
-
-Units: `band_gap` in eV, `Ehull_meV_atom` in meV atom⁻¹, `Na_ratio` dimensionless,
-electronegativity on the Pauling scale.
-
-### `summary_screened_candidates.csv`
-
-Required by `outlier_detection.py` only. One row per compound with the pipeline metadata:
-
-| Column | Meaning |
-| --- | --- |
-| `formula_pretty` | Reduced formula, the merge key against the feature table |
-| `family` | `NASICON`, `β-alumina-like`, `Halide`, `Chalcogenide`, `Borohydride`, or `Other` |
-| `band_gap`, `Ehull_meV_atom`, `Na_ratio` | Screening properties |
-| `cluster` | HDBSCAN label; `-1` denotes unclustered noise |
-| `membership_prob` | HDBSCAN membership probability |
-| `z1`, `z2` | 2D UMAP coordinates |
-
-If several rows share a `formula_pretty`, the one with the highest `membership_prob` is
-kept so the merge stays one-to-one.
-
----
-
 ## 1. `outlier_detection.py`
 
 ```bash
