@@ -3,6 +3,7 @@
 Code released with:
 
 > **Correlation and Outlier Analysis of Sodium Solid-State Electrolytes Using High-Throughput Data Mining**
+
 > Alireza Mashayekhi, Sepehr Khazraei, Jack Bekou
 > Correspondence: amashayekhi@flexngate.com
 
