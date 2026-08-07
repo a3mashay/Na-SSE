@@ -1,59 +1,5 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""
-Robust statistical outlier detection for sodium solid-state electrolytes.
-
-Component 1 of the code released with:
-
-    "Correlation and Outlier Analysis of Sodium Solid-State Electrolytes Using
-     High-Throughput Data Mining"
-    A. Mashayekhi, S. Khazraei, J. Bekou
-
-Two complementary outlier scores are computed once on the final working
-dataset of Na-containing compositions:
-
-  Global rarity  Robust Mahalanobis distance in a principal-component space
-                 retaining 95% of the descriptor variance. The covariance is
-                 estimated with a Minimum Covariance Determinant (MinCovDet)
-                 estimator, with a Ledoit-Wolf shrinkage fallback, and inverted
-                 with a Moore-Penrose pseudo-inverse for numerical stability.
-
-  Local rarity   Local Outlier Factor (k = 35, Euclidean metric) applied to the
-                 two-dimensional UMAP embedding, i.e. the same low-dimensional
-                 map used for HDBSCAN clustering.
-
-Compounds in the top 1% of either score are flagged as outliers. The global
-score measures rarity relative to the full descriptor distribution; the local
-score measures crowding within the clustering map. The two are deliberately
-computed in different spaces so that they highlight complementary regions of
-chemical rarity.
-
-Inputs (see README.md for the full schema)
-------------------------------------------
-  composition_features.csv        Matminer composition descriptors, one row per
-                                  compound, keyed on `formula_pretty`.
-  summary_screened_candidates.csv Per-compound metadata carrying `family`,
-                                  `band_gap`, `Ehull_meV_atom`, `Na_ratio`,
-                                  `cluster`, `membership_prob`, and the UMAP
-                                  coordinates `z1`, `z2`.
-
-Outputs
--------
-  outliers_pca_robustcov_summary.csv   All rows with mahal2, lof_score, flags.
-  outliers_top_global.csv              Top global outliers      (Table S1)
-  outliers_top_local.csv               Top local outliers       (Table S2)
-  outliers_by_family.csv               Outlier counts by family (Table 1)
-  outliers_by_cluster.csv              Outlier counts by cluster(Table S3)
-
-Usage
------
-  python outlier_detection.py \
-      --features composition_features.csv \
-      --summary  summary_screened_candidates.csv \
-      --outdir   analysis_ext
-
-License: MIT (see LICENSE)
-"""
 
 from __future__ import annotations
 
