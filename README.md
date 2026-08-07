@@ -34,13 +34,6 @@ minutes on CPU at the dataset size used in the paper.
 
 ## 1. `outlier_detection.py`
 
-```bash
-python outlier_detection.py \
-    --features composition_features.csv \
-    --summary  summary_screened_candidates.csv \
-    --outdir   analysis_ext
-```
-
 ### Method
 
 ### Key parameters
