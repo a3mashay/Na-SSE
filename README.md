@@ -14,15 +14,6 @@ This repository hosts the two core methodological components:
 | `outlier_detection.py` | Robust statistical outlier detection: PCA-space Minimum-Covariance-Determinant Mahalanobis distance (global) and Local Outlier Factor on the UMAP embedding (local) |
 | `wgan_gp_generative.py` | WGAN-GP generative pipeline with Bayesian optimization and weighted nearest-neighbor matching |
 
-## Scope of this release
-
-The paper's data and code availability statement covers these two components only. The
-upstream screening pipeline (Materials Project retrieval, family assignment, Matminer
-featurization, UMAP embedding, HDBSCAN clustering), the supervised random-forest cluster
-classifier and its descriptor-attribution analysis, the cross-file benchmarking searches,
-and the plotting scripts are documented in the paper and Supporting Information but are
-not released here. No datasets are deposited with this repository.
-
 ---
 
 ## Installation
