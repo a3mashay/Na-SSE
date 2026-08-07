@@ -1,0 +1,12 @@
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.ipynb_checkpoints/
+
+# Local data and run outputs
+*.csv
+*.keras
+analysis_ext/
+na_sse_generative_run/
+!requirements.txt
