@@ -43,25 +43,6 @@ python outlier_detection.py \
 
 ### Method
 
-Two scores are computed once on the final working dataset and are deliberately evaluated
-in different spaces, so they capture complementary notions of rarity.
-
-**Global.** Descriptors are standardized and reduced by PCA retaining 95% of the variance
-(80 components in the published run). Covariance is estimated in that space with a
-Minimum Covariance Determinant estimator, with a Ledoit-Wolf shrinkage fallback if MCD
-fails to converge, and inverted with a Moore-Penrose pseudo-inverse so the squared
-Mahalanobis distance stays well defined when the covariance is rank-deficient. This score
-measures rarity relative to the full descriptor distribution.
-
-**Local.** Local Outlier Factor with k = 35 and a Euclidean metric, applied to the
-two-dimensional UMAP embedding, i.e. the same low-dimensional map used for HDBSCAN
-clustering. This score measures crowding within a compound's immediate neighborhood.
-Running LOF in the clustering map rather than in PCA space is intentional and is why the
-`z1`/`z2` columns are a hard requirement.
-
-Compounds in the top 1% of either score are flagged. In the published run each criterion
-flagged 39 compositions and the two overlapped in only two cases.
-
 ### Key parameters
 
 | Parameter | Value | Flag |
