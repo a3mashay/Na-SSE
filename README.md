@@ -59,12 +59,6 @@ minutes on CPU at the dataset size used in the paper.
 
 ## 2. `wgan_gp_generative.py`
 
-```bash
-python wgan_gp_generative.py \
-    --data   composition_features.csv \
-    --outdir na_sse_generative_run
-```
-
 ### Method
 
 ### Key parameters
@@ -109,21 +103,4 @@ Both scripts are seeded (17 for outlier detection, 72 for the generative pipelin
 wgan_gp_generative.py will not reproduce the paper's numbers exactly. Adversarial training accumulates floating-point differences across TensorFlow versions, thread counts and GPU kernels, so no two environments converge to an identical generator; sampling draws fresh latent vectors; each Bayesian-optimization query resamples the generator, making the objective itself stochastic; and the nearest-neighbor list follows from whichever single candidate that search returns. Expect the optimized coordinate, the best candidate and the neighbor ordering to shift between runs. The design region reported in the paper reflects the learned manifold rather than one run, but individual descriptor values should be regenerated rather than quoted.
 
 Figures are produced from the CSV outputs above; the plotting scripts are not part of this release.
-## Citation
 
-```bibtex
-@article{mashayekhi_na_sse,
-  title   = {Correlation and Outlier Analysis of Sodium Solid-State Electrolytes
-             Using High-Throughput Data Mining},
-  author  = {Mashayekhi, Alireza and Khazraei, Sepehr and Bekou, Jack},
-  note    = {Manuscript},
-  year    = {2025}
-}
-```
-
-Please also cite the underlying tools: Materials Project, pymatgen, Matminer, UMAP,
-HDBSCAN, scikit-learn, TensorFlow, and `bayesian-optimization`.
-
-## License
-
-MIT. See `LICENSE`.
