@@ -4,10 +4,9 @@ Code released with:
 
 > **Correlation and Outlier Analysis of Sodium Solid-State Electrolytes Using High-Throughput Data Mining**
 > Alireza Mashayekhi, Sepehr Khazraei, Jack Bekou
-> Flex-Ion Battery Innovation Center, Windsor, ON, Canada; University of Waterloo, Waterloo, ON, Canada
 > Correspondence: amashayekhi@flexngate.com
 
-This repository hosts the two core methodological components named in the paper's data and code availability statement:
+This repository hosts the two core methodological components:
 
 | File | Component |
 | --- | --- |
