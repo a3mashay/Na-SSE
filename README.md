@@ -34,17 +34,6 @@ minutes on CPU at the dataset size used in the paper.
 
 ## 1. `outlier_detection.py`
 
-### Method
-
-### Key parameters
-
-| Parameter | Value | Flag |
-| --- | --- | --- |
-| Random seed | 17 (shared with the UMAP embedding) | — |
-| PCA variance retained | 0.95 | `--pca-var` |
-| LOF neighbors (k) | 35 | `--lof-neighbors` |
-| Flag quantile | 0.99 on each score | `--quantile` |
-
 ### Outputs
 
 | File | Contents |
@@ -58,26 +47,6 @@ minutes on CPU at the dataset size used in the paper.
 ---
 
 ## 2. `wgan_gp_generative.py`
-
-### Method
-
-### Key parameters
-
-| Parameter | Value |
-| --- | --- |
-| Random seed | 72 |
-| Latent dimension | 16 |
-| Generator / critic widths | 128-256-256 / 256-256-128 |
-| Gradient penalty λ | 10 |
-| Critic steps per generator step | 5 |
-| Instance noise σ | 0.02 |
-| Optimizers | Adam, lr 4×10⁻⁵ (generator) and 3×10⁻⁴ (critic), β₁ = 0, β₂ = 0.9 |
-| Batch size / epochs | 64 / 250 |
-| Synthetic pool | 40,000 samples |
-| Screen | E_g > 2 eV, 0 ≤ E_hull ≤ 20 meV atom⁻¹, Na_ratio > 0.05 |
-| BO budget | 10 initial points + 35 iterations, 6,000 generator draws per query, top-25 averaged |
-| BO distance weights | Na_ratio 50, E_hull 0.8, band gap 10, mean EN 5 |
-| NN search | k = 100, weight boosts 6 / 2 / 4 / 3 on the four design descriptors |
 
 ### Outputs
 
