@@ -79,8 +79,6 @@ minutes on CPU at the dataset size used in the paper.
 | BO distance weights | Na_ratio 50, E_hull 0.8, band gap 10, mean EN 5 |
 | NN search | k = 100, weight boosts 6 / 2 / 4 / 3 on the four design descriptors |
 
-Useful flags: `--epochs`, `--n-synthetic`, `--seed`.
-
 ### Outputs
 
 | File | Contents |
@@ -97,8 +95,6 @@ Useful flags: `--epochs`, `--n-synthetic`, `--seed`.
 ---
 
 ## Reproducibility
-
-Both scripts are seeded (17 and 72).`outlier_detection.py` is deterministic.
 
 `wgan_gp_generative.py` may not reproduce the paper's numbers exactly. GAN training varies with TensorFlow version and hardware, and both the sampling and the Bayesian-optimization objective are stochastic, so the optimized point and the neighbor ordering can shift between runs. The overall design region is reproducible; individual descriptor values should be regenerated rather than quoted.
 
