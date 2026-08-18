@@ -147,11 +147,7 @@ or lower `--pca-var` before using the ranking.
 The generative pipeline is not bit-for-bit reproducible across TensorFlow builds, thread
 counts or GPU kernels, which is normal for adversarial training. Deterministic kernels
 make a single seed repeatable on fixed hardware; across hardware, use `--runs` and report
-the ensemble. The qualitative outcome reported in the paper — convergence toward
-sodium-dilute, near-ground-state, wide-gap, fluorine-rich frameworks — is stable across
+the ensemble. The qualitative outcome reported in the paper is stable across
 runs, but individual descriptor values and neighbour orderings should be regenerated
 rather than assumed.
-
-Figures in the paper are produced from the CSV outputs above; the plotting scripts are not
-part of this release.
 
