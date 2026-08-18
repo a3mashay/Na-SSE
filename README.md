@@ -14,15 +14,6 @@ clustering) is described in full in Section 2 of the paper and in the Supporting
 Information, and is not part of this release. The input schema is documented below so the
 two components can be reproduced or applied to an independently prepared dataset.
 
-## Scope of this release
-
-The paper's data and code availability statement covers these two components only. The
-upstream screening pipeline (Materials Project retrieval, family assignment, Matminer
-featurization, UMAP embedding, HDBSCAN clustering), the supervised random-forest cluster
-classifier and its descriptor-attribution analysis, the cross-file benchmarking searches,
-and the plotting scripts are documented in the paper and Supporting Information but are
-not released here. No datasets are deposited with this repository.
-
 ---
 
 ## Installation
