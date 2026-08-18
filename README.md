@@ -1,12 +1,5 @@
 # Na-SSE
 
-Code released with:
-
-> **Unsupervised Screening and Generative Exploration of Sodium Solid-State Electrolyte Chemical Space**
-> Alireza Mashayekhi, Sepehr Khazraei, Jack Bekou
-> Flex-Ion Battery Innovation Center, Windsor, ON, Canada; University of Waterloo, Waterloo, ON, Canada
-> Correspondence: amashayekhi@flexngate.com
-
 This repository hosts the two core methodological components named in the paper's data and code availability statement:
 
 | File | Component |
@@ -45,57 +38,6 @@ Python 3.9 or newer. `outlier_detection.py` needs only NumPy, pandas, SciPy and
 scikit-learn; TensorFlow and `bayesian-optimization` are required by
 `wgan_gp_generative.py` alone. A GPU is not required; the generative run trains in a few
 minutes on CPU at the dataset size used in the paper.
-
----
-
-## Input data
-
-Both scripts read CSV tables produced by the upstream screening pipeline. Neither script
-retrieves data from the Materials Project; the API key and retrieval step remain with the
-upstream pipeline.
-
-### `composition_features.csv`
-
-One row per compound, keyed on `formula_pretty`, holding the Matminer composition
-descriptors together with the tabulated electronic and thermodynamic properties. In the
-published run this table held 3,874 pre-filtered Na compositions and 246 retained
-descriptors.
-
-`outlier_detection.py` uses every numeric non-metadata column in this file.
-`wgan_gp_generative.py` uses only the 27 descriptors listed in `FEATURE_COLS`, which must
-be present under exactly these names:
-
-| Group | Columns |
-| --- | --- |
-| Core screening properties (3) | `band_gap`, `Ehull_meV_atom`, `Na_ratio` |
-| Norm-based descriptors (6) | `0-norm`, `2-norm`, `3-norm`, `5-norm`, `7-norm`, `10-norm` |
-| Averaged / range elemental (9) | `mean AtomicWeight`, `mean Column`, `mean Row`, `range Number`, `mean Number`, `range AtomicRadius`, `mean AtomicRadius`, `range Electronegativity`, `mean Electronegativity` |
-| Magpie aggregates (5) | `MagpieData mean AtomicWeight`, `MagpieData mean Electronegativity`, `MagpieData mean GSvolume_pa`, `MagpieData mean GSbandgap`, `MagpieData mean GSmagmom` |
-| Element fractions (4) | `Na fraction`, `O fraction`, `P fraction`, `S fraction` |
-
-`mean AtomicWeight` / `MagpieData mean AtomicWeight` and `mean Electronegativity` /
-`MagpieData mean Electronegativity` are deliberately kept as separate features: they are
-computed from different elemental reference tables (direct stoichiometric average versus
-the Magpie preset).
-
-Units: `band_gap` in eV, `Ehull_meV_atom` in meV atom⁻¹, `Na_ratio` dimensionless,
-electronegativity on the Pauling scale.
-
-### `summary_screened_candidates.csv`
-
-Required by `outlier_detection.py` only. One row per compound with the pipeline metadata:
-
-| Column | Meaning |
-| --- | --- |
-| `formula_pretty` | Reduced formula, the merge key against the feature table |
-| `family` | `NASICON`, `β-alumina-like`, `Halide`, `Chalcogenide`, `Borohydride`, or `Other` |
-| `band_gap`, `Ehull_meV_atom`, `Na_ratio` | Screening properties |
-| `cluster` | HDBSCAN label; `-1` denotes unclustered noise |
-| `membership_prob` | HDBSCAN membership probability |
-| `z1`, `z2` | 2D UMAP coordinates |
-
-If several rows share a `formula_pretty`, the one with the highest `membership_prob` is
-kept so the merge stays one-to-one.
 
 ---
 
@@ -144,31 +86,6 @@ deterministic, so it is computed once rather than repeated.
 Compounds in the top 1% of either score are flagged. In the published run each repeat of
 the global screen flagged 39 compositions.
 
-### Key parameters
-
-| Parameter | Value | Flag |
-| --- | --- | --- |
-| Random seed | 17 (shared with the UMAP embedding) | — |
-| PCA variance retained | 0.95 | `--pca-var` |
-| MCD support fraction | 0.75 | `--support-fraction` |
-| Eigenvalue floor | 1e-8 of the largest eigenvalue | — |
-| Repeats of the global screen | 10 | `--repeats` |
-| Consensus selection frequency | 0.80 | `--consensus` |
-| LOF neighbors (k) | 35 | `--lof-neighbors` |
-| Flag quantile | 0.99 on each score | `--quantile` |
-
-### Outputs
-
-| File | Contents |
-| --- | --- |
-| `outliers_pca_robustcov_summary.csv` | Every row with `mahal2` (mean over repeats), `mahal2_sd`, `mahal2_mean_rank`, `selection_freq`, `lof_score`, and both flags |
-| `outliers_top_global.csv` | Top global outliers — supports **Table S1** |
-| `outliers_top_local.csv` | Top local outliers — supports **Table S2** |
-| `outliers_by_family.csv` | Outlier counts and shares by chemical family — supports **Table 1** |
-| `outliers_by_cluster.csv` | Outlier counts and shares by cluster — supports **Table S3** |
-| `outlier_repeat_stability.csv` | Pairwise Jaccard overlap between the flagged sets of each repeat |
-
----
 
 ## 2. `wgan_gp_generative.py`
 
@@ -178,7 +95,6 @@ python wgan_gp_generative.py \
     --outdir na_sse_generative_run \
     --runs   10
 ```
-
 ### Method
 
 **Preprocessing.** Na-containing rows are selected and represented by the 27 descriptors
@@ -226,45 +142,6 @@ suffix, and writes ensemble summaries. The run whose optimum lies closest to the
 mean is copied back to the canonical filenames and is the one to show wherever a single
 representative run is needed.
 
-### Key parameters
-
-| Parameter | Value |
-| --- | --- |
-| Random seed | 72 (base; `--runs` uses 72, 73, ...) |
-| Latent dimension | 16 |
-| Generator / critic widths | 128-256-256 / 256-256-128 |
-| Gradient penalty λ | 10 |
-| Critic steps per generator step | 5 |
-| Instance noise σ | 0.02 |
-| Optimizers | Adam, lr 4×10⁻⁵ (generator) and 3×10⁻⁴ (critic), β₁ = 0, β₂ = 0.9 |
-| Batch size / epochs | 64 / 250 |
-| Synthetic pool | 40,000 samples |
-| Screen | E_g > 2 eV, 0 ≤ E_hull ≤ 20 meV atom⁻¹, Na_ratio > 0.05 |
-| BO budget | 10 initial points + 35 iterations, 6,000 generator draws per query, top-25 averaged |
-| BO distance weights | Na_ratio 50, E_hull 0.8, band gap 10, mean EN 5 |
-| NN search | k = 100, weight boosts 6 / 2 / 4 / 3 on the four design descriptors |
-
-Useful flags: `--epochs`, `--n-synthetic`, `--seed`, `--runs`, `--no-determinism`.
-
-### Outputs
-
-| File | Contents |
-| --- | --- |
-| `wgan_training_history.csv` | Epoch-averaged critic loss, generator loss and gradient penalty — supports **Figure 4b,c** |
-| `generator_wgan_gp_na_sse.keras` | Trained generator |
-| `synthetic_na_sse_all.csv` | Full synthetic pool — supports **Figure 3** and the t-SNE overlay in **Figure 4a** |
-| `synthetic_na_sse_screened.csv` | Pool after the physical screen |
-| `bo_optimum_target.csv` | The optimized coordinate in descriptor space |
-| `bo_best_synthetic_candidate.csv` | Screened sample closest to that coordinate |
-| `nn_matches_to_bo_best.csv` | The 100 nearest real compounds, with weighted distances |
-| `synthetic_screened_top100.csv` | Top-100 screened candidates by low E_hull, wide gap, higher Na content |
-| `ensemble_bo_params.csv` | Optimized coordinate from every run (`--runs` > 1) |
-| `ensemble_best_synthetic.csv` | Best synthetic candidate and pool sizes from every run |
-| `ensemble_nn_frequency.csv` | How many runs place each phase in the ten nearest neighbours |
-| `*__seedNN.*` | Per-run archive of every artifact above |
-
----
-
 ## Reproducibility
 
 Both scripts are seeded (17 and 72 respectively), but neither is reproducible by seeding
@@ -287,17 +164,3 @@ rather than assumed.
 Figures in the paper are produced from the CSV outputs above; the plotting scripts are not
 part of this release.
 
-## Citation
-
-```bibtex
-@article{mashayekhi_na_sse,
-  title   = {Unsupervised Screening and Generative Exploration of Sodium
-             Solid-State Electrolyte Chemical Space},
-  author  = {Mashayekhi, Alireza and Khazraei, Sepehr and Bekou, Jack},
-  note    = {Manuscript},
-  year    = {2026}
-}
-```
-
-Please also cite the underlying tools: Materials Project, pymatgen, Matminer, UMAP,
-HDBSCAN, scikit-learn, TensorFlow, and `bayesian-optimization`.
