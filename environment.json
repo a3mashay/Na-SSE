@@ -1,0 +1,26 @@
+{
+  "recorded_utc": "2026-08-21T12:34:51+00:00",
+  "python": "3.12.13",
+  "platform": "Linux-6.6.122+-x86_64-with-glibc2.35",
+  "packages": {
+    "numpy": "2.0.2",
+    "scipy": "1.18.0",
+    "scikit-learn": "1.6.1",
+    "umap-learn": "0.5.12",
+    "hdbscan": "0.8.44",
+    "numba": "0.60.0",
+    "pymatgen": "2026.5.4",
+    "matminer": "0.10.1",
+    "shap": "0.52.0",
+    "bayesian-optimization": "3.3.0",
+    "tensorflow": "2.20.0"
+  },
+  "thread_env": {
+    "PYTHONHASHSEED": "0",
+    "OMP_NUM_THREADS": "1",
+    "MKL_NUM_THREADS": "1",
+    "OPENBLAS_NUM_THREADS": "1",
+    "NUMBA_NUM_THREADS": "1",
+    "NUMEXPR_NUM_THREADS": "1"
+  }
+}
