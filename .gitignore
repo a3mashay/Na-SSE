@@ -1,0 +1,16 @@
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.ipynb_checkpoints/
+
+# Local data and run outputs
+*.csv
+*.keras
+analysis_ext/
+na_sse_generative_run/
+
+# ...but always ship the environment record
+!requirements.txt
+!requirements_lock.txt
+!environment.json
